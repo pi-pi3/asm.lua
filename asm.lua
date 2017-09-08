@@ -1,6 +1,6 @@
 #!/bin/lua
 
-local asm = require('init.lua')
+local asm = require('init')
 
 local argv = {...}
 local opts = {}
