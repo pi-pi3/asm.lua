@@ -29,7 +29,7 @@ for _, v in pairs(ex) do
     v.pattern = b .. string.gsub(v.pattern, ' ', '\\s+') .. e
 end
 
-function match(expr, ex, result)
+local match = function(expr, ex, result)
     local out = {string.match(expr, ex.pattern)}
     if #out == 0 then
         return false
@@ -45,11 +45,17 @@ function match(expr, ex, result)
     return true
 end
 
-function genast(src)
+local genast = function(src)
     local line = 1
     local ast = {}
+    local iter
+    if type(src) == 'string' then
+        iter = string.gmatch(src, '.')
+    elseif type(src) == 'function' then
+        iter = iter
+    end
 
-    for expr in string.gmatch(src, '.') do
+    for expr in iter do
         expr = string.gsub(expr, '%s*%-%-.*$', '')
         -- TODO check for invalid characters 
         if not string.match(expr, '^%s*$') then
@@ -58,7 +64,7 @@ function genast(src)
                 if match(expr, v, result) then
                     ast[#ast+1] = result
                 else
-                    error(string.format('invalid expression: %s' ..
+                    error(string.format('invalid expression: %s\n' ..
                                         '           at line: %d', expr, line))
                 end
             end
@@ -80,7 +86,7 @@ comp['until'] = {pattern = 'until _R.f.%s', arg = {'cond'}}
 comp['extern'] = {pattern = '_X["%s"] = %s', arg = {'name'}}
 
 local section = 'text'
-function expr_to_lua(expr)
+local expr_to_lua = function(expr)
     local type = expr.type
 
     if type == 'section' then
@@ -102,7 +108,7 @@ function expr_to_lua(expr)
     end
 end
 
-function ast_to_lua(ast)
+local ast_to_lua = function(ast)
     local dst = ''
     for _, v in ipairs(ast) do
         dst = dst .. expr_to_lua(v)
@@ -110,7 +116,7 @@ function ast_to_lua(ast)
     return dst
 end
 
-function compile(src)
+local compile = function(src)
     local dst = boilerplate
 
     local ast
@@ -125,3 +131,5 @@ function compile(src)
     dst = dst .. ast_to_lua(ast)
     return dst
 end
+
+return compile
