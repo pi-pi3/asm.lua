@@ -44,7 +44,7 @@ stack
 
 ### operations
 ```
-operation [dst], [src] -- comment
+<op> [dst], [src] -- comment
 ```
 
 ##### reference
@@ -58,7 +58,7 @@ if <cond> then
 end
 ```
 
-`cond` can be `gt`, `lt`, `ge`, `le`, `eq` or `ne`
+`cond` can be `gt`, `lt`, `ge`, `le`, `eq`, `ne`, `err` or `syserr`
 
 ### loops
 ```
@@ -123,9 +123,8 @@ end             -- end function
 ```
 section .data
 
-hello_world:
-    db "Hello, world!" -- "Hello, world!" is put into the first available spot in
-                       -- memory, i.e. 0x1
+-- "Hello, world!" is put into the first available spot in memory, i.e. 0x1
+def hello_world "Hello, world!"
 
 section .text
 
@@ -227,7 +226,7 @@ function strsub()
 end
 
 _print = print
-function endl()
+function print()
     _print(_R.ss)
 end
 
@@ -235,8 +234,7 @@ function endl()
     _print("\n")
 end
 
-# hello_world:
-#     db "Hello, world!"
+# def hello_world "Hello, world!"
 _D[0x1] = "Hello, world!"
 
 # mov ss, [hello_world]
@@ -249,7 +247,7 @@ _R.f.syserr = not select(1, pcall(strlen))
 _R.c = _R.a
  
 # loop
-while _R.c > 0 do
+_R.c = _R.c + 1; while _R.c > 1 do; _R.c = _R.c - 1
 
 #  mov ss, [hello_world]
 _R.ss = _D[0x1]
