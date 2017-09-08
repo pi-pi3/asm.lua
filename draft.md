@@ -25,31 +25,32 @@
 Memory is divided into cells indexed by integers. Every cell holds a Lua
 variable.
 
-## 0
+### 0
 reserved for nil  
 cannot be changed
 
-## 1 .. 4ki
+### 1 .. 4ki
 program's .data section
 
-## 4ki .. 64ki
+### 4ki .. 64ki
 general purpose memory
 
-## 64ki .. 80ki
+### 64ki .. 80ki
 stack
 
-## 24ki video memory?
+### 24ki video memory?
 
 # Syntax
 
-## operations
+### operations
 ```
 operation [dst], [src] -- comment
 ```
 
-### reference
+##### reference
+// TODO
 
-## conditional
+### conditional
 ```
 cmp <dst>, <src> OR test <dst>
 if <cond> then
@@ -59,7 +60,7 @@ end
 
 `cond` can be `gt`, `lt`, `ge`, `le`, `eq` or `ne`
 
-## loops
+### loops
 ```
 repeat
 ... code
@@ -83,7 +84,7 @@ end
 
 The last one loops as long as register C is not 0.
 
-## functions
+### functions
 ```
 <name>:
 ... code
@@ -93,14 +94,14 @@ end
 
 can only be defined in the .text section
 
-## Lua ffi
+### Lua ffi
 ```
 extern <name>
 movx <extern-dst>, <any-src>
 callx <extern-func>, <n>
 ```
 
-## Examples
+# Examples
 ```
 section .text
 
@@ -161,7 +162,7 @@ push [0x1]  -- push the value at [0x1] to stack
 callx foo, 4 -- call extern foo with 4 arguments
 ```
 
-## How the examples compile to Lua
+# How the examples compile to Lua
 
 ### Boilerplate
 ```
