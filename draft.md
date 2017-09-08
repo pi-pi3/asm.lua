@@ -26,11 +26,11 @@ Memory is divided into cells indexed by integers. Every cell holds a Lua
 variable.
 
 ## 0
-reserved for nil
+reserved for nil  
 cannot be changed
 
 ## 1 .. 4ki
-programs .data section
+program's .data section
 
 ## 4ki .. 64ki
 general purpose memory
@@ -38,13 +38,13 @@ general purpose memory
 ## 64ki .. 80ki
 stack
 
-## 24ki video memory
+## 24ki video memory?
 
-# syntax
+# Syntax
 
 ## operations
 ```
-operation [dst], [src] # comment
+operation [dst], [src] -- comment
 ```
 
 ### reference
@@ -104,18 +104,18 @@ callx <extern-func>, <n>
 ```
 section .text
 
-mov a, 1            # set register a to 1
-mov [0x4000], a     # move the value in register a to memory at 0x4000
+mov a, 1            -- set register a to 1
+mov [0x4000], a     -- move the value in register a to memory at 0x4000
 ```
 
 ### Function
 ```
 section .text
 
-foo:            # define a function called foo
- mov a, 0       # move 1 to the a register
- ret            # return from function
-end             # end function
+foo:            -- define a function called foo
+ mov a, 0       -- move 1 to the a register
+ ret            -- return from function
+end             -- end function
 ```
 
 ### Print a string backwards, one character at a time
@@ -123,42 +123,42 @@ end             # end function
 section .data
 
 hello_world:
-    db "Hello, world!" # "Hello, world!" is put into the first available spot in
-                       # memory, i.e. 0x1
+    db "Hello, world!" -- "Hello, world!" is put into the first available spot in
+                       -- memory, i.e. 0x1
 
 section .text
 
-mov ss, [hello_world]   # move the value of hello_world to ss
-call strlen             # set a to length of hello_world
+mov ss, [hello_world]   -- move the value of hello_world to ss
+call strlen             -- set a to length of hello_world
 
-mov c, a # set c to a
+mov c, a -- set c to a
 
 loop
- mov ss, [hello_world]   # move the value at hello_world to ss
- mov a, c   # set a to c
- mov b, c   # set b to c
- inc b      # increment b
- call strsub    # get the substring ranging from c to c + 1,
-                # where c is the first character of the string
-                # and c + 1 is the first character after the string
- mov ss, ds     # move the result of the last string operation to ss
- call print     # print the string in ss
+ mov ss, [hello_world]   -- move the value at hello_world to ss
+ mov a, c   -- set a to c
+ mov b, c   -- set b to c
+ inc b      -- increment b
+ call strsub    -- get the substring ranging from c to c + 1,
+                -- where c is the first character of the string
+                -- and c + 1 is the first character after the string
+ mov ss, ds     -- move the result of the last string operation to ss
+ call print     -- print the string in ss
 end
-call endl       # print a newline
+call endl       -- print a newline
 ```
 
 ### Lua ffi
 ```
-extern foo # declare an extern variable called foo
-extern bar # declare an extern variable called bar
+extern foo -- declare an extern variable called foo
+extern bar -- declare an extern variable called bar
 
-movx bar, 0 # set extern bar to 0
-push bar    # push the value of bar to stack
-push 1      # push 1 to stack
-push a      # push the value in register a to stack
-push [0x1]  # push the value at [0x1] to stack
+movx bar, 0 -- set extern bar to 0
+push bar    -- push the value of bar to stack
+push 1      -- push 1 to stack
+push a      -- push the value in register a to stack
+push [0x1]  -- push the value at [0x1] to stack
 
-callx foo, 4 # call extern foo with 4 arguments
+callx foo, 4 -- call extern foo with 4 arguments
 ```
 
 ## How the examples compile to Lua
@@ -218,7 +218,7 @@ end
 ### Print a string backwards, one character at a time
 ```
 function strlen()
-    _R.a = #_R.ss
+    _R.a = string.len(_R.ss)
 end
 
 function strsub()
