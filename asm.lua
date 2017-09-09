@@ -15,15 +15,21 @@ for _, arg in ipairs(argv) do
         local val = string.sub(arg, 3)
         if string.len(val) > 0 then
             opts[optname] = val
+            optname = nil
         end
     elseif optname then
         opts[optname] = arg
+        optname = nil
     else
         free[#free+1] = arg
     end
 end
 
-function usage()
+local printf = function(...)
+    print(string.format(...))
+end
+
+local usage = function()
     print('Usage: asm.lua [options] FILE\n\n' ..
           'Options:\n' ..
           ' -o --out FILE   Output to FILE\n' ..
@@ -35,19 +41,38 @@ if opts.h or opts.help then
     usage()
 end
 
+local verbose = opts.v or opts.verbose or false
+local vlevel = tonumber(verbose) or 1
+if verbose then
+    if vlevel >= 2 then
+        printf('verbose level: %d', vlevel)
+    end
+    verbose = vlevel
+end
+
 local input = free[1]
 if not input then
     print('error: no input file')
     usage()
 end
 
+if verbose >= 2 then
+    printf('input: %s', input)
+end
+
 local output = opts.o or opts.out or 'a.lua'
+if verbose >= 2 then
+    printf('output: %s', output)
+end
 
-input = io.open(input, 'r')
-output = io.open(output, 'w+')
+local outfile = io.open(output, 'w+')
 
-code = asm(io.lines(input))
-io.write(outpute, code)
+local code = asm.compile(io.lines(input), verbose)
+outfile:write(code)
 
-io.close(input)
-io.close(output)
+io.close(outfile)
+
+if verbose then
+    printf('compiled %s', input)
+    printf('written %d characters to %s', string.len(code), output)
+end
