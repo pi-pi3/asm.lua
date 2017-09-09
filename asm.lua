@@ -56,23 +56,23 @@ if not input then
     usage()
 end
 
-if verbose >= 2 then
+if verbose and verbose >= 2 then
     printf('input: %s', input)
 end
 
 local output = opts.o or opts.out or 'a.lua'
-if verbose >= 2 then
+if verbose and verbose >= 2 then
     printf('output: %s', output)
 end
 
-local outfile = io.open(output, 'w+')
-
 local code = asm.compile(io.lines(input), verbose)
+
+local outfile = io.open(output, 'w+')
 outfile:write(code)
 
 io.close(outfile)
 
-if verbose then
+if verbose and verbose then
     printf('compiled %s', input)
     printf('written %d characters to %s', string.len(code), output)
 end
