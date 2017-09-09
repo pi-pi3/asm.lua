@@ -50,6 +50,13 @@ local match_arg = function(expr, arg, result, verbose)
         if labels[result.name] then
             result.type = 'immediate'
             result.val = labels[result.name] 
+        elseif std[result.name] then
+            result.type = 'immediate'
+            result.val = labels[result.name] 
+            if not stdsymbols[result.name] then
+                prelude = prelude .. std[result.name] .. '\n'
+                stdsymbols[result.name] = true
+            end
         elseif externs[result.name] then
             result.type = 'extern'
             result.name = result.name
@@ -60,6 +67,8 @@ local match_arg = function(expr, arg, result, verbose)
         if labels[result.name] then
             result.type = 'mem'
             result.ptr = labels[result.name] 
+        elseif std[result.name] then
+            error(string.format('cannot access static std member: %s', result.name))
         else
             error(string.format('invalid identifier: %s', result.name))
         end
