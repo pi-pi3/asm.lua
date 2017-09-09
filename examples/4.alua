@@ -1,0 +1,11 @@
+
+extern foo -- declare an extern variable called foo
+extern bar -- declare an extern variable called bar
+
+mov bar, 0 -- set extern bar to 0
+push bar    -- push the value of bar to stack
+push 1      -- push 1 to stack
+push a      -- push the value in register a to stack
+push [0x1]  -- push the value at [0x1] to stack
+
+callx foo, 4 -- call extern foo with 4 arguments

@@ -1,0 +1,7 @@
+
+section .text
+
+foo:            -- define a function called foo
+ mov a, 0       -- move 1 to the a register
+ ret            -- return from function
+end             -- end function
