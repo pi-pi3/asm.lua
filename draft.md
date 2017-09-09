@@ -29,10 +29,7 @@ variable.
 reserved for nil  
 cannot be changed
 
-### 1 .. 4ki
-program's .data section
-
-### 4ki .. 64ki
+### 1ki .. 64ki
 general purpose memory
 
 ### 64ki .. 80ki
@@ -48,7 +45,34 @@ stack
 ```
 
 ##### reference
-// TODO
+ - data moving
+    - `mov DST, SRC` moves SRC to DST
+ - functions
+    - `call F` calls F
+    - `callx F` calls an extern F
+    - `ret` returns from function
+ - stack
+    - `push SRC` pushes SRC to stack
+    - `pop DST` pops from stack to DST
+ - testing
+    - `cmp A, B` compares A and B
+    - `test A` tests if A is zero
+    - `not` negates last comparison
+ - boolean
+    - `cmpl DST` binary compliment
+    - `and  DST, SRC` binary and
+    - `or   DST, SRC` binary or
+    - `xor  DST, SRC` binary xor
+    - `nand DST, SRC` binary nand
+    - `nor  DST, SRC` binary nor
+    - `xnor DST, SRC` binary xnor
+ - arithmetic
+    - `inc DST` increments DST
+    - `dec DST` decrements DST
+    - `add DST, SRC` adds SRC to DST
+    - `sub DST, SRC` subtracts SRC from DST
+    - `mul DST, SRC` multipies DST by src
+    - `div DST, SRC` divides DST by SRC
 
 ### conditional
 ```
@@ -97,7 +121,7 @@ can only be defined in the .text section
 ### Lua ffi
 ```
 extern <name>
-movx <extern-dst>, <any-src>
+mov <extern-dst>, <any-src>
 callx <extern-func>, <n>
 ```
 
