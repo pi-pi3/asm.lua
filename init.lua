@@ -83,7 +83,7 @@ local genast = function(src, verbose)
     return ast
 end
 
-comp = {}
+local comp = {}
 comp['do'] = {pattern = 'do', arg = {}}
 comp['end'] = {pattern = 'end', arg = {}}
 comp['loop'] = {pattern = '_R.c=_R.c+1;while _R.c>1 do _R.c=_R.c-1', arg = {}}
