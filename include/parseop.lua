@@ -32,7 +32,7 @@ ops['sub'] = {pattern = '%s=%s-%s', arg = {'a', 'a', 'b'}}
 ops['mul'] = {pattern = '%s=%s*%s', arg = {'a', 'a', 'b'}}
 ops['div'] = {pattern = '%s=%s/%s', arg = {'a', 'a', 'b'}}
 
-local parsearg = require(root .. 'include/parsearg')
+local parsearg = require(_ASM.root .. 'include/parsearg')
 local parseop = function(expr, verbose)
     local err = false
 
