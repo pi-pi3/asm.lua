@@ -35,6 +35,7 @@ ops['div'] = {pattern = '%s=%s/%s', arg = {'a', 'a', 'b'}}
 local parsearg = require('include/parsearg')
 local parseop = function(expr, verbose)
     local err = false
+
     for k, v in pairs(expr) do
         if k == 'a' or k == 'b' or k == 'c' then
             local status, result = pcall(parsearg, v, verbose)
@@ -45,6 +46,11 @@ local parseop = function(expr, verbose)
                 err = true
             end
         end
+    end
+
+    if err then
+        print('quitting asm.lua')
+        os.exit(1)
     end
 
     local op = expr.op

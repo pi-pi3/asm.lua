@@ -46,23 +46,32 @@ end
 
 local assemble = function(ast, verbose)
     local dst = ''
+
+    local err = false
+
     for _, v in ipairs(ast) do
         local lua
         local status, result = pcall(expr_to_lua, v, verbose)
         if status then
             lua = result
+            if verbose and verbose >= 2 then
+                lua = string.format(' -- line %d\n -- %s\n%s\n', v.linen, v.text, lua)
+            elseif verbose then
+                lua = string.format('%s -- %s', lua, v.text)
+            end
+            dst = dst .. lua .. '\n'
         else
             print(string.format('invalid expression: %s\n' ..
                                 '           at line: %d', v.text, v.linen))
-            os.exit(1)
+            err = true
         end
-        if verbose and verbose >= 2 then
-            lua = string.format(' -- line %d\n -- %s\n%s\n', v.linen, v.text, lua)
-        elseif verbose then
-            lua = string.format('%s -- %s', lua, v.text)
-        end
-        dst = dst .. lua .. '\n'
     end
+
+    if err then
+        print('quitting asm.lua')
+        os.exit(1)
+    end
+
     return dst
 end
 

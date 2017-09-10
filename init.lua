@@ -42,6 +42,7 @@ local genast = function(src, verbose)
     end
     
     if err then
+        print('quitting asm.lua')
         os.exit(1)
     end
 

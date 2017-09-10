@@ -50,13 +50,15 @@ local match_arg = function(expr, arg, result, verbose)
         if labels[result.name] then
             result.type = 'immediate'
             result.val = labels[result.name] 
+            result.name = nil
         elseif std[result.name] then
             result.type = 'immediate'
-            result.val = labels[result.name] 
+            result.val = result.name
             if not stdsymbols[result.name] then
                 prelude = prelude .. std[result.name] .. '\n'
                 stdsymbols[result.name] = true
             end
+            result.name = nil
         elseif externs[result.name] then
             result.type = 'extern'
             result.name = result.name
