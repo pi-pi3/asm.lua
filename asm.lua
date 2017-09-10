@@ -11,8 +11,14 @@ local free = {}
 local optname = nil
 for _, arg in ipairs(argv) do
     if string.sub(arg, 1, 2) == '--' then
+        if optname then
+            opts[optname] = true
+        end
         optname = string.sub(arg, 3)
     elseif string.sub(arg, 1, 1) == '-' then
+        if optname then
+            opts[optname] = true
+        end
         optname = string.sub(arg, 2, 2)
         local val = string.sub(arg, 3)
         if string.len(val) > 0 then
@@ -25,6 +31,10 @@ for _, arg in ipairs(argv) do
     else
         free[#free+1] = arg
     end
+end
+
+if optname then
+    opts[optname] = true
 end
 
 local printf = function(...)
@@ -68,7 +78,7 @@ if verbose and verbose >= 2 then
     printf('output: %s', output)
 end
 
-local neko8 = opts.n or opts.neko8
+local neko8 = opts.n or opts.neko
 
 local code
 local status, result = pcall(asm.compile, io.lines(input), verbose, neko8)

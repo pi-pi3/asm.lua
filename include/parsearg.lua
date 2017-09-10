@@ -30,6 +30,8 @@ for _, v in ipairs(arg) do
 end
 
 local match_arg = function(expr, arg, result, verbose)
+    local neko = require(_ASM.root .. 'include/neko')
+
     local out = {string.match(expr, arg.pattern)}
     if #out == 0 then
         return false
@@ -62,6 +64,7 @@ local match_arg = function(expr, arg, result, verbose)
         elseif _ASM.externs[result.name] then
             result.type = 'externref'
             result.name = result.name
+        elseif _ASM.neko and neko[result.name] then
         else
             error(string.format('invalid identifier: %s', result.name))
         end
@@ -72,6 +75,7 @@ local match_arg = function(expr, arg, result, verbose)
         elseif _ASM.externs[result.name] then
             result.type = 'extern'
             result.name = result.name
+        elseif _ASM.neko and neko[result.name] then
         elseif _ASM.std[result.name] then
             error(string.format('cannot access static std member: %s', result.name))
         else
