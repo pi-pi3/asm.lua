@@ -9,7 +9,8 @@ local asmnot=function() return {lt=not _R.f.lt,gt=not _R.f.gt,le=not _R.f.le,ge=
 ]]
 
 prelude = [[]]
-std = require('include/std')
+root = string.gsub(select(2, ...), 'init.lua$', '')
+std = require(root .. 'include/std')
 
 label = 0x0
 labels = {}
@@ -17,7 +18,7 @@ externs = {}
 
 stdsymbols = {}
 
-local parseline = require('include/parseline')
+local parseline = require(root .. 'include/parseline')
 local genast = function(src, verbose)
     local line = 1
     local ast = {}
@@ -48,7 +49,7 @@ local genast = function(src, verbose)
     return ast
 end
 
-local assemble = require('include/assemble')
+local assemble = require(root .. 'include/assemble')
 local compile = function(src, verbose)
     prelude = [[]]
 
