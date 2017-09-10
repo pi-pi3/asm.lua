@@ -55,13 +55,18 @@ local genast = function(src, verbose)
 end
 
 local assemble = require(_ASM.root .. 'include/assemble')
-local compile = function(src, verbose)
+local compile = function(src, verbose, neko8)
     _ASM.prelude = [[]]
+    _ASM.neko8 = neko8
 
     local ast = genast(src, verbose)
     local asm = assemble(ast, verbose)
 
-    return boilerplate .. _ASM.prelude .. asm
+    if neko8 then
+        return boilerplate .. asm
+    else
+        return boilerplate .. _ASM.prelude .. asm
+    end
 end
 
 return {compile = compile}
