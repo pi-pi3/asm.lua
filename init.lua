@@ -23,7 +23,7 @@ local genast = function(src, verbose)
     local ast = {}
     local iter
     if type(src) == 'string' then
-        iter = string.gmatch(src, '.')
+        iter = string.gmatch(src, '[^\n]*')
     elseif type(src) == 'function' then
         iter = src
     end
@@ -42,8 +42,7 @@ local genast = function(src, verbose)
     end
     
     if err then
-        print('quitting asm.lua')
-        os.exit(1)
+        error('invalid expression(s) in source file')
     end
 
     return ast

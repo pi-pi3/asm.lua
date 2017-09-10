@@ -68,8 +68,7 @@ local assemble = function(ast, verbose)
     end
 
     if err then
-        print('quitting asm.lua')
-        os.exit(1)
+        error('invalid expression(s) in source file')
     end
 
     return dst

@@ -49,8 +49,7 @@ local parseop = function(expr, verbose)
     end
 
     if err then
-        print('quitting asm.lua')
-        os.exit(1)
+        error('invalid operator(s) in source file')
     end
 
     local op = expr.op

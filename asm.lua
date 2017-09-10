@@ -65,7 +65,14 @@ if verbose and verbose >= 2 then
     printf('output: %s', output)
 end
 
-local code = asm.compile(io.lines(input), verbose)
+local code
+local status, result = pcall(asm.compile, io.lines(input), verbose)
+if status then
+    code = result
+else
+    print(result)
+    os.exit(1)
+end
 
 local outfile = io.open(output, 'w+')
 outfile:write(code)
