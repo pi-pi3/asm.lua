@@ -6,13 +6,13 @@ std.include = [[local include=function() require(_R.ss) end]]
 std.putc = [[local putc=function() io.write(string.sub(_R.ss,1,1)) end]]
 std.puts = [[local puts=function() print(_R.ss) end]]
 std.endl = [[local endl=function() io.write('\n') end]]
-std.sprintf = [[local sprintf = function()
+std.sprintf = [[local sprintf=function()
 local args={}
 _R.sp=_R.sp-_R.a
 for i=0,_R.a-1 do args[i+1]=_D[_R.sp+i] end
 _R.ds=string.format(_R.ss,table.unpack(args))
 end]]
-std.printf = [[local printf = function() sprintf();print(_R.ds) end]]
+std.printf = [[local printf=function() sprintf();io.write(_R.ds) end]]
 std.itoa = [[local itoa=function() _R.ds=tostring(_R.a) end]]
 std.atoi = [[local atoi=function() _R.ds=tostring(_R.a) end]]
 std.memset = [[local memset=function() for i=0,_R.c-1 do _D[_R.b+i]=_R.a end end]]
