@@ -8,6 +8,8 @@ local asmtest=function(a) local eq=a==0; return {lt=false,gt=false,le=eq,ge=eq,e
 local asmnot=function() return {lt=not _R.f.lt,gt=not _R.f.gt,le=not _R.f.le,ge=not _R.f.ge,eq=not _R.f.eq,ne=not _R.f.ne,err=false,syserr=false} end
 ]]
 
+table.unpack = table.unpack or unpack
+
 prelude = [[]]
 local name = ...
 root = string.gsub(name, '/init$', '') .. '/'
