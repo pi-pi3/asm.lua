@@ -60,7 +60,7 @@ local match_arg = function(expr, arg, result, verbose)
             end
             result.name = nil
         elseif externs[result.name] then
-            result.type = 'extern'
+            result.type = 'externref'
             result.name = result.name
         else
             error(string.format('invalid identifier: %s', result.name))
@@ -69,6 +69,9 @@ local match_arg = function(expr, arg, result, verbose)
         if labels[result.name] then
             result.type = 'mem'
             result.ptr = labels[result.name] 
+        elseif externs[result.name] then
+            result.type = 'extern'
+            result.name = result.name
         elseif std[result.name] then
             error(string.format('cannot access static std member: %s', result.name))
         else
@@ -100,7 +103,8 @@ local types = {}
 types['reg'] = {pattern = '_R.%s', arg = {'reg'}}
 types['immediate'] = {pattern = '%s', arg = {'val'}}
 types['mem'] = {pattern = '_D[%d]', arg = {'ptr'}}
-types['extern'] = {pattern = '_X["%s"]', arg = {'name'}}
+types['externref'] = {pattern = '_X["%s"]', arg = {'name'}}
+types['extern'] = {pattern = '%s', arg = {'name'}}
 
 local type_to_lua = function(expr, verbose)
     local type = expr.type
