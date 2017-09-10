@@ -20,6 +20,6 @@ loop
                 -- where c is the first character of the string
                 -- and c + 1 is the first character after the string
  mov ss, ds     -- move the result of the last string operation to ss
- call puts      -- print the string in ss
+ call putc      -- print the string in ss
 end
 call endl       -- print a newline
