@@ -9,7 +9,8 @@ local asmnot=function() return {lt=not _R.f.lt,gt=not _R.f.gt,le=not _R.f.le,ge=
 ]]
 
 prelude = [[]]
-root = string.gsub(select(2, ...), 'init.lua$', '')
+local name = ...
+root = string.gsub(name, '/init$', '') .. '/'
 std = require(root .. 'include/std')
 
 label = 0x0
