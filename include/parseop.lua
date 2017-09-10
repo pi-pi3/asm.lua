@@ -5,7 +5,7 @@ ops['call'] = {pattern = '_R.f.syserr=not pcall(%s)', arg = {'a'}}
 ops['callx'] = {pattern = '_Xargs={}\n' ..
                           'local n=%d\n' ..
                           '_R.sp=_R.sp-n\n' ..
-                          'for i=0,n-1 do _Xargs[i]=_D[_R.sp+i] end\n' ..
+                          'for i=0,n-1 do _Xargs[i+1]=_D[_R.sp+i] end\n' ..
                           '_R.f.syserr=not pcall(%s,unpack(_Xargs))\n' ..
                           '_Xargs=nil', arg = {'b', 'a'}}
 ops['ret'] = {pattern = 'return', arg = {}}
