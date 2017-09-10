@@ -37,6 +37,18 @@ local map=map
 local btn=function() _R.f.eq=btn(_R.ss) end
 local btnp=btnp
 local key=function() _R.f.eq=key(_R.ss) end
+
+local memset=function() for i=0,_R.c-1 do _D[_R.b+i]=_R.a end end
+local memcpy=function() for i=0,_R.c-1 do _D[_R.b+i]=_D[_R.a+i] end end
+local memcmp=function() for i=0,_R.c-1 do local a=_D[_R.a+i]-_D[_R.b+i];if a~=0 then _R.a=a;return end end;_R.a=0 end
+
+local strlen=function() _R.a=_R.ss:len() end
+local strsub=function() _R.ds=_R.ss:sub(_R.a,_R.b-1) end
+local strrep=function() _R.ds=_R.ss:rep(_R.a) end
+local strup=function() _R.ds=_R.ss:upper() end
+local strlow=function() _R.ds=_R.ss:lower() end
+local strfind=function() _R.a,_R.c=_R.ss:find(_R.ds);_R.c=_R.c-_R.a+1 end
+local strmatch=function() _R.ds=_R.ss:find(_R.ds) end
 ]]
 
 _ASM = {}
