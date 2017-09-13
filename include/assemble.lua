@@ -7,7 +7,7 @@ end
 
 local mkext = function(name)
     _ASM.externs[name] = _ASM.label
-    return ''
+    return '-- extern ' .. name
 end
 
 local comp = {}
@@ -25,7 +25,7 @@ local expr_to_lua = function(expr, verbose, std)
 
     if type == 'section' then
         section = expr.name
-        return ''
+        return '-- .' .. expr.name
     elseif type == 'op' then -- TODO
         return parseop(expr, verbose, std)
     elseif type == 'def' then

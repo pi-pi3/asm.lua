@@ -60,7 +60,7 @@ local match_arg = function(expr, arg, result, verbose, std)
             end
             result.name = nil
         elseif _ASM.externs[result.name] then
-            result.type = 'externref'
+            result.type = 'extern'
             result.name = result.name
         else
             error(string.format('invalid identifier: %s', result.name))
