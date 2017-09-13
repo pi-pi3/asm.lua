@@ -86,16 +86,18 @@ end
 
 local assemble = require(_ASM.root .. 'include/assemble')
 local compile = function(src, verbose, std, ports, mmap)
-    local ast = genast(src, verbose)
-    local asm = assemble(ast, verbose, std)
-
     local prelude = prelude
-    if std or std == nil then
+    if type(std) == 'string' then
+        _ASM.std = std
+    elseif std ~= false then
         prelude = prelude .. port_std
         for _, v in pairs(_ASM.std) do
             prelude = prelude .. v .. '\n'
         end
     end
+
+    local ast = genast(src, verbose)
+    local asm = assemble(ast, verbose, std)
 
     if ports then
         for _, v in ipairs(ports) do
