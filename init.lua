@@ -45,7 +45,6 @@ table.unpack = table.unpack or unpack
 
 local name = ...
 _ASM.root = string.gsub(name, '/init$', '') .. '/'
-_ASM.std = require(_ASM.root .. 'include/std')
 
 _ASM.label = 0x0
 _ASM.labels = {}
@@ -86,10 +85,14 @@ end
 
 local assemble = require(_ASM.root .. 'include/assemble')
 local compile = function(src, verbose, std, ports, mmap)
+    _ASM.std = nil
+    _ASM.stdsymbols = {}
+
     local prelude = prelude
     if type(std) == 'string' then
         _ASM.std = std
     elseif std ~= false then
+        _ASM.std = require(_ASM.root .. 'include/std')
         prelude = prelude .. port_std
         for _, v in pairs(_ASM.std) do
             prelude = prelude .. v .. '\n'
