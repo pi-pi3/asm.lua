@@ -93,7 +93,7 @@ local compile = function(src, verbose, std, ports, mmap)
     if std or std == nil then
         prelude = prelude .. port_std
         for _, v in pairs(_ASM.std) do
-            prelude = prelude .. v
+            prelude = prelude .. v .. '\n'
         end
     end
 
@@ -115,7 +115,7 @@ local compile = function(src, verbose, std, ports, mmap)
         end
     end
     
-    return prelude .. asm
+    return prelude .. '\n' .. asm
 end
 
 return {compile = compile}
