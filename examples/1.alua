@@ -2,4 +2,4 @@
 section .text
 
 mov a, 1        -- set register a to 1
-ld 0x4000, a    -- move the value in register a to memory at 0x4000
+st 0x4000, a    -- move the value in register a to memory at 0x4000
