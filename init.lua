@@ -7,7 +7,7 @@ _P={}
 _PD={}
 _MMAP={{a=0,b=0,set=function()end,get=function()end},{a=1,b=81920,set=function(p,x) _D[p]=x end,get=function(p) return _D[p] end}}
 _M=function(p,x)
-for i=#_MMAP,0,-1 do
+for i=#_MMAP,1,-1 do
  local v=_MMAP[i]
  if p>=v.a and p<=v.b then
   if x then v.set(p,x) else return v.get(p) end
