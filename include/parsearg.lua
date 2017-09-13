@@ -103,7 +103,6 @@ local types = {}
 types['reg'] = {pattern = '_R.%s', arg = {'reg'}}
 types['immediate'] = {pattern = '%s', arg = {'val'}}
 types['mem'] = {pattern = '_M(%d)', arg = {'ptr'}}
-types['externref'] = {pattern = '_X["%s"]', arg = {'name'}}
 types['extern'] = {pattern = '%s', arg = {'name'}}
 
 local type_to_lua = function(expr, verbose)
@@ -118,7 +117,7 @@ local type_to_lua = function(expr, verbose)
     return lua
 end
 
-local parsearg = function(expr, verbose, std)
+local parsearg = function(expr, verbose, std, is_dst)
     return type_to_lua(gentype(expr, verbose, std), verbose)
 end
 

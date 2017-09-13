@@ -7,7 +7,7 @@ end
 
 local mkext = function(name)
     _ASM.externs[name] = _ASM.label
-    return string.format('_X["%s"]=%s', name, name)
+    return ''
 end
 
 local comp = {}

@@ -2,15 +2,17 @@
 local ops = {}
 -- data move
 ops['mov'] = {pattern = '%s=%s', arg = {'a', 'b'}}
+ops['st'] = {pattern = '_M(%s,%s)', arg = {'a', 'b'}}
+ops['ld'] = {pattern = '%s=_M(%s)', arg = {'a', 'b'}}
 
 -- stack operations
 ops['call'] = {pattern = '_R.f.syserr=not pcall(%s)', arg = {'a'}}
-ops['callx'] = {pattern = '_Xargs={}\n' ..
+ops['callx'] = {pattern = 'local _Xargs={}\n' ..
                           'local n=%d\n' ..
                           '_R.sp=_R.sp-n\n' ..
                           'for i=0,n-1 do _Xargs[i+1]=_M(_R.sp+i) end\n' ..
-                          '_R.f.syserr=not pcall(%s,unpck(_Xargs))\n' ..
-                          '_Xargs=nil', arg = {'b', 'a'}}
+                          '_R.f.syserr=not pcall(%s,unpck(_Xargs))',
+                          arg = {'b', 'a'}}
 ops['ret'] = {pattern = 'return', arg = {}}
 ops['push'] = {pattern = '_M(_R.sp,%s);_R.sp=_R.sp+1', arg = {'a'}}
 ops['pop'] = {pattern = '_R.sp=_R.sp-1;%s=_M(_R.sp)', arg = {'a'}}
@@ -72,7 +74,8 @@ local parseop = function(expr, verbose, std)
         args[#args+1] = expr[v]
     end
 
-    local lua = string.format(ops[op].pattern, table.unpack(args))
+    local lua
+    lua = string.format(ops[op].pattern, table.unpack(args))
     return lua
 end
 

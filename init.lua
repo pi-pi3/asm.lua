@@ -14,10 +14,22 @@ for i=#_MMAP,0,-1 do
  end
 end
 end
+local id=function(...) return ... end
 local asmcmp=function(a,b) return {lt=a<b,gt=a>b,le=a<=b,ge=a>=b,eq=a==b,ne=a~=b,err=false,syserr=false} end
 local asmtest=function(a) local eq=a==0; return {lt=false,gt=false,le=eq,ge=eq,eq=eq,ne=not eq,err=false,syserr=false} end
 local asmnot=function() return {lt=not _R.f.lt,gt=not _R.f.gt,le=not _R.f.le,ge=not _R.f.ge,eq=not _R.f.eq,ne=not _R.f.ne,err=false,syserr=false} end
 local unpck=table and table.unpack or unpack or unpck
+if not bit then
+bit={}
+bit.bnot=id
+bit.band=id
+bit.bor=id
+bit.bxor=id
+bit.lshift=id
+bit.rshift=id
+bit.rol=id
+bit.ror=id
+end
 ]]
 
 local port_std = [[
