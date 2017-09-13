@@ -89,18 +89,23 @@ local compile = function(src, verbose, std, ports, mmap)
     _ASM.stdsymbols = {}
 
     local prelude = prelude
-    if type(std) == 'string' then
+    if type(std) == 'table' then
         _ASM.std = std
-    elseif std ~= false then
+    elseif type(std) == 'string' then
+        _ASM.std = {std}
+    elseif std then
         _ASM.std = require(_ASM.root .. 'include/std')
         prelude = prelude .. port_std
+    end
+
+    if _ASM.std then
         for _, v in pairs(_ASM.std) do
             prelude = prelude .. v .. '\n'
         end
     end
 
     local ast = genast(src, verbose)
-    local asm = assemble(ast, verbose, std)
+    local asm = assemble(ast, verbose)
 
     if ports then
         for _, v in ipairs(ports) do
