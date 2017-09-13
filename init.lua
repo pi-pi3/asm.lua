@@ -66,15 +66,18 @@ end
 local assemble = require(_ASM.root .. 'include/assemble')
 local compile = function(src, verbose, std, ...)
     local ast = genast(src, verbose)
-    local asm = assemble(ast, verbose)
+    local asm = assemble(ast, verbose, std)
 
     local prelude = prelude
     if std or std == nil then
         prelude = prelude .. port_std
+        for _, v in pairs(_ASM.std) do
+            prelude = prelude .. v
+        end
     end
 
     for _, v in ipairs({...}) do
-        prelude = prelude .. v
+        prelude = prelude .. v .. '\n'
     end
     
     return prelude .. asm
