@@ -1,11 +1,21 @@
 
-local boilerplate = [[
+local prelude = [[
 _R={a=0,b=0,c=0,d=0,ss='\0',ds='\0',f={gt=false,lt=false,ge=false,le=false,eq=false,ne=false,err=false,syserr=false},sp=65536}
 _X={}
 _D={}
+_P={}
+_PD={}
 local asmcmp=function(a,b) return {lt=a<b,gt=a>b,le=a<=b,ge=a>=b,eq=a==b,ne=a~=b,err=false,syserr=false} end
 local asmtest=function(a) local eq=a==0; return {lt=false,gt=false,le=eq,ge=eq,eq=eq,ne=not eq,err=false,syserr=false} end
 local asmnot=function() return {lt=not _R.f.lt,gt=not _R.f.gt,le=not _R.f.le,ge=not _R.f.ge,eq=not _R.f.eq,ne=not _R.f.ne,err=false,syserr=false} end
+local unpck=table and table.unpack or unpack or unpck
+]]
+
+local port_std = [[
+_P[0x100]=function(a) _PD[0x100]=os.execute(a) end
+_P[0x101]=function(a) os.exit(a) end
+_P[0x102]=function(a) _PD[0x102]=os.getenv(a) end
+_P[0x103]=function() _PD[0x103]=os.time() end
 ]]
 
 _ASM = {}
@@ -54,11 +64,20 @@ local genast = function(src, verbose)
 end
 
 local assemble = require(_ASM.root .. 'include/assemble')
-local compile = function(src, verbose)
+local compile = function(src, verbose, std, ...)
     local ast = genast(src, verbose)
     local asm = assemble(ast, verbose)
 
-    return boilerplate .. asm
+    local prelude = prelude
+    if std or std == nil then
+        prelude = prelude .. port_std
+    end
+
+    for _, v in ipairs({...}) do
+        prelude = prelude .. v
+    end
+    
+    return prelude .. asm
 end
 
 return {compile = compile}
