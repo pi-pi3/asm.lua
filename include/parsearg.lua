@@ -54,10 +54,6 @@ local match_arg = function(expr, arg, result, verbose)
         elseif _ASM.std and _ASM.std[result.name] then
             result.type = 'immediate'
             result.val = result.name
-            if not _ASM.stdsymbols[result.name] then
-                _ASM.prelude = _ASM.prelude .. _ASM.std[result.name] .. '\n'
-                _ASM.stdsymbols[result.name] = true
-            end
             result.name = nil
         elseif _ASM.externs[result.name] then
             result.type = 'extern'

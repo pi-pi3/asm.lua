@@ -50,8 +50,6 @@ _ASM.label = 0x0
 _ASM.labels = {}
 _ASM.externs = {}
 
-_ASM.stdsymbols = {}
-
 local parseline = require(_ASM.root .. 'include/parseline')
 local genast = function(src, verbose)
     local line = 1
@@ -86,7 +84,6 @@ end
 local assemble = require(_ASM.root .. 'include/assemble')
 local compile = function(src, verbose, std, ports, mmap)
     _ASM.std = nil
-    _ASM.stdsymbols = {}
 
     local prelude = prelude
     if type(std) == 'table' then
