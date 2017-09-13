@@ -45,7 +45,7 @@ local usage = function()
     print('Usage: asm.lua [options] FILE\n\n' ..
           'Options:\n' ..
           ' -o --out FILE   Output to FILE\n' ..
-          ' -n --neko       neko8 style\n' ..
+          ' -n --nostd      No std library, std ports and standard mmap\n' ..
           ' -h --help       Show this message and quit')
     os.exit(1)
 end
@@ -78,10 +78,10 @@ if verbose and verbose >= 2 then
     printf('output: %s', output)
 end
 
-local neko8 = opts.n or opts.neko
+local nostd = opts.n or opts.nostd
 
 local code
-local status, result = pcall(asm.compile, io.lines(input), verbose, neko8)
+local status, result = pcall(asm.compile, io.lines(input), verbose, not nostd)
 if status then
     code = result
 else
