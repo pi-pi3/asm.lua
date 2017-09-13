@@ -5,6 +5,15 @@ _X={}
 _D={}
 _P={}
 _PD={}
+_MMAP={{a=0,b=0,set=function()end,get=function()end},{a=1,b=81920,set=function(p,x) _D[p]=x end,get=function(p) return _D[p] end}}
+_M=function(p,x)
+for i=#_MMAP,0,-1 do
+ local v=_MMAP[i]
+ if p>=v.a and p<=v.b then
+  if x then v.set(p,x) else return v.get(p) end
+ end
+end
+end
 local asmcmp=function(a,b) return {lt=a<b,gt=a>b,le=a<=b,ge=a>=b,eq=a==b,ne=a~=b,err=false,syserr=false} end
 local asmtest=function(a) local eq=a==0; return {lt=false,gt=false,le=eq,ge=eq,eq=eq,ne=not eq,err=false,syserr=false} end
 local asmnot=function() return {lt=not _R.f.lt,gt=not _R.f.gt,le=not _R.f.le,ge=not _R.f.ge,eq=not _R.f.eq,ne=not _R.f.ne,err=false,syserr=false} end
@@ -64,7 +73,7 @@ local genast = function(src, verbose)
 end
 
 local assemble = require(_ASM.root .. 'include/assemble')
-local compile = function(src, verbose, std, ...)
+local compile = function(src, verbose, std, ports, mmap)
     local ast = genast(src, verbose)
     local asm = assemble(ast, verbose, std)
 
@@ -76,8 +85,22 @@ local compile = function(src, verbose, std, ...)
         end
     end
 
-    for _, v in ipairs({...}) do
-        prelude = prelude .. v .. '\n'
+    if ports then
+        for _, v in ipairs(ports) do
+            prelude = prelude .. string.format('_P[%d]=%s\n',
+                v.port or v[1], v.func or v[2])
+        end
+    end
+
+    if mmap then
+        for _, v in ipairs(mmap) do
+            prelude = prelude .. string.format(
+                '_MMAP[#_MMAP+1]={a=%d,b=%d,set=%s,get=%s}\n',
+                v.min or v[1],
+                v.max or v[2],
+                v.set or v[3] or 'function()end',
+                v.get or v[4] or 'function()end')
+        end
     end
     
     return prelude .. asm

@@ -102,7 +102,7 @@ end
 local types = {}
 types['reg'] = {pattern = '_R.%s', arg = {'reg'}}
 types['immediate'] = {pattern = '%s', arg = {'val'}}
-types['mem'] = {pattern = '_D[%d]', arg = {'ptr'}}
+types['mem'] = {pattern = '_M(%d)', arg = {'ptr'}}
 types['externref'] = {pattern = '_X["%s"]', arg = {'name'}}
 types['extern'] = {pattern = '%s', arg = {'name'}}
 

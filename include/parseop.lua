@@ -8,12 +8,12 @@ ops['call'] = {pattern = '_R.f.syserr=not pcall(%s)', arg = {'a'}}
 ops['callx'] = {pattern = '_Xargs={}\n' ..
                           'local n=%d\n' ..
                           '_R.sp=_R.sp-n\n' ..
-                          'for i=0,n-1 do _Xargs[i+1]=_D[_R.sp+i] end\n' ..
+                          'for i=0,n-1 do _Xargs[i+1]=_M(_R.sp+i) end\n' ..
                           '_R.f.syserr=not pcall(%s,unpck(_Xargs))\n' ..
                           '_Xargs=nil', arg = {'b', 'a'}}
 ops['ret'] = {pattern = 'return', arg = {}}
-ops['push'] = {pattern = '_D[_R.sp]=%s;_R.sp=_R.sp+1', arg = {'a'}}
-ops['pop'] = {pattern = '_R.sp=_R.sp-1;%s=_D[_R.sp]', arg = {'a'}}
+ops['push'] = {pattern = '_M(_R.sp,%s);_R.sp=_R.sp+1', arg = {'a'}}
+ops['pop'] = {pattern = '_R.sp=_R.sp-1;%s=_M(_R.sp)', arg = {'a'}}
 
 -- boolean logic
 ops['cmp'] = {pattern = '_R.f=asmcmp(%s,%s)', arg = {'a', 'b'}}
