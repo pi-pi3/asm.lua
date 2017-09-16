@@ -46,6 +46,7 @@ local usage = function()
           'Options:\n' ..
           ' -o --out FILE   Output to FILE\n' ..
           ' -n --nostd      No std library, std ports and standard mmap\n' ..
+          ' -r --run        Run the output instead of writing go FILE\n' ..
           ' -h --help       Show this message and quit')
     os.exit(1)
 end
@@ -89,12 +90,24 @@ else
     os.exit(1)
 end
 
-local outfile = io.open(output, 'w+')
-outfile:write(code)
-
-io.close(outfile)
+local run = opts.r or opts.run
+if run then
+    local f = loadstring(code)
+    local status, result = pcall(f)
+    if not status then
+        printf('a runtime error occured in %s:\n%s', input, result)
+        os.exit(1)
+    end
+else
+    local outfile = io.open(output, 'w+')
+    outfile:write(code)
+    
+    io.close(outfile)
+end
 
 if verbose and verbose then
     printf('compiled %s', input)
-    printf('written %d characters to %s', string.len(code), output)
+    if not run then
+        printf('written %d characters to %s', string.len(code), output)
+    end
 end
