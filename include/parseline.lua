@@ -1,6 +1,7 @@
 
 local ex = {
     {type = 'do', pattern = 'do', out = {}},
+    {type = 'repeat', pattern = 'repeat', out = {}},
     {type = 'end', pattern = 'end', out = {}},
     {type = 'loop', pattern = 'loop', out = {}},
     {type = 'label', pattern = '([%a%d_%-]+)%s*:', out = {'name'}},

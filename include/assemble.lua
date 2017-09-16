@@ -12,11 +12,12 @@ end
 
 local comp = {}
 comp['do'] = {pattern = 'do', arg = {}}
+comp['repeat'] = {pattern = 'repeat', arg = {}}
 comp['end'] = {pattern = 'end', arg = {}}
 comp['loop'] = {pattern = '_R.c=_R.c+1;while _R.c>1 do _R.c=_R.c-1', arg = {}}
 comp['if'] = {pattern = 'if _R.f.%s then', arg = {'cond'}}
 comp['while'] = {pattern = 'while _R.f.%s do', arg = {'cond'}}
-comp['until'] = {pattern = 'until _R.f.%s', arg = {'cond'}}
+comp['until'] = {pattern = 'until not _R.f.%s', arg = {'cond'}}
 
 local section = 'text'
 local parseop = require(_ASM.root .. 'include/parseop')
