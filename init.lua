@@ -93,6 +93,7 @@ local compile = function(src, verbose, std, ports, mmap)
     elseif std then
         _ASM.std = require(_ASM.root .. 'include/std')
         prelude = prelude .. port_std
+        prelude = prelude .. '_MMAP[#_MMAP+1]={a=81921,b=81921,set=function(_,v) print(v) end,get=id}\n'
     end
 
     if _ASM.std then
