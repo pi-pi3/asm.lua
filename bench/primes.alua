@@ -1,0 +1,76 @@
+
+-- ASM.LUA
+
+-- compilation time: 0.006s
+--  ./asm.lua bench/primes.alua  0.00s user 0.00s system 94% cpu 0.006 total
+-- runtime: 0.698s
+--  lua a.lua  0.69s user 0.00s system 99% cpu 0.698 total
+-- runtime (no print): 0.636s
+--  lua a.lua  0.64s user 0.00s system 99% cpu 0.636 total
+
+-- file size: 547 bytes
+-- compiled size: 3831 bytes
+-- necessary overhead: 3115 bytes
+
+-- VANILLA LUA
+
+-- compilation time: n/a
+-- runtime time:  0.029s
+--  lua bench/primes.lua  0.01s user 0.02s system 98% cpu 0.029 total
+-- runtime time (no print): 0.015s
+--  lua bench/primes.lua  0.01s user 0.00s system 97% cpu 0.015 total
+
+-- file size: 294 bytes
+-- compiled size: n/a
+
+section .data
+
+def n 60000
+def numbers 0x0008 -- pointer to numbers
+
+section .text
+
+mov a, 1
+ld b, numbers 
+ld c, n
+loop
+    st b, a
+    inc a
+    inc b
+end
+
+ld a, n
+call sqrt
+call floor
+mov c, a
+dec c
+
+mov a, 2
+
+loop
+    mov d, 2
+    repeat
+        push d
+        mul d, a
+        ld b, numbers
+        add b, d
+        dec b
+        st b, -1
+        ld b, n
+        cmp d, b
+        pop d
+        inc d
+    until lt
+    inc a
+end
+
+ld b, numbers 
+ld c, n
+loop
+    ld a, b
+    cmp a, -1
+    if gt then
+        st 0x14001, a
+    end
+    inc b
+end

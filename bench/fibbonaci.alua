@@ -1,0 +1,54 @@
+
+-- ASM.LUA
+
+-- compilation time: 0.005s
+--  ./asm.lua bench/fibbonaci.alua  0.01s user 0.00s system 94% cpu 0.005 total
+-- runtime: 5.127s
+--  lua a.lua  3.87s user 1.25s system 99% cpu 5.127 total
+-- runtime (no print): 1.990s
+--  lua a.lua  1.99s user 0.00s system 99% cpu 1.990 total
+
+-- file size: 267 bytes
+-- compiled size: 3461 bytes
+-- necessary overhead: 3115 bytes
+
+-- VANILLA LUA
+
+-- compilation time: n/a
+-- runtime time: 1.950s
+--  lua bench/fibbonaci.lua  0.85s user 1.09s system 99% cpu 1.950 total
+-- runtime time (no print): 0.100s
+--  lua bench/fibbonaci.lua  0.10s user 0.00s system 99% cpu 0.100 total
+
+-- file size: 149 bytes
+-- compiled size: n/a
+
+section .data
+
+def fib 1
+def x 0
+def y 1
+def n 1000000
+
+section .text
+
+fibonnaci:
+    ld a, x
+    ld d, y
+    add a, d
+    st fib, a
+
+    ld a, y
+    st x, a
+
+    ld a, fib
+    st y, a
+    ret
+end
+
+ld c, n
+loop
+    ld a, fib
+    st 0x14001, a
+    call [fibonnaci]
+end
